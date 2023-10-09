@@ -1,23 +1,27 @@
 import http from "node:http";
 import crypto from "node:crypto";
+import { json } from "./middlewares/json.js";
 
 const usersDB = [];
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   const { method, url } = req;
   
+  await json(req, res);
+
   if ( method === "GET" && url === "/users") {
     
     return res
-      .setHeader('Content-type', 'aplication/json')
       .end(JSON.stringify(usersDB));
   }
 
   if (method === "POST" && url === '/users') {
+    const { name, email } = req.body
+    
     const newUser = {
       id: crypto.randomUUID(),
-      name: "John Doe",
-      email: "johndoe@example.com",
+      name,
+      email,
     }
     
     usersDB.push(newUser);

@@ -22,10 +22,10 @@ const server = http.createServer((req, res) => {
     
     usersDB.push(newUser);
     
-    return res.end('Usuário criado com sucesso');
+    return res.writeHead(201).end();
   }
 
-  return res.end("Not found")
+  return res.writeHead(404).end()
 })
 
 server.listen(3333);

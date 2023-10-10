@@ -1,13 +1,14 @@
 import crypto from 'node:crypto';
 
 import { Database } from './database.js';
+import { buildRoutePath } from './utils/build-route-path.js';
 
 const database = new Database();
 
 export const routes = [
   {
     method: 'GET',
-    path: '/users',
+    path: buildRoutePath('/users'),
     handler: (req, res) => {
       const users = database.select('users');
 
@@ -16,7 +17,7 @@ export const routes = [
   },
   {
     method: 'POST',
-    path: '/users',
+    path: buildRoutePath('/users'),
     handler: (req, res) => {
       const { name, email } = req.body;
 
@@ -33,17 +34,19 @@ export const routes = [
   },
   {
     method: 'PUT',
-    path: '/users',
+    path: buildRoutePath('/users'),
     handler: (req, res) => {},
   },
   {
     method: 'PATCH',
-    path: '/users',
+    path: buildRoutePath('/users'),
     handler: (req, res) => {},
   },
   {
     method: 'DELETE',
-    path: '/users',
-    handler: (req, res) => {},
+    path: buildRoutePath('/users/:id'),
+    handler: (req, res) => {
+      res.end();
+    },
   },
 ];

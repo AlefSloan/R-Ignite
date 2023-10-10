@@ -1,8 +1,9 @@
 import http from "node:http";
 import crypto from "node:crypto";
 import { json } from "./middlewares/json.js";
+import { Database } from "./database.js";
 
-const usersDB = [];
+const database = new Database();
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
@@ -10,9 +11,9 @@ const server = http.createServer(async (req, res) => {
   await json(req, res);
 
   if ( method === "GET" && url === "/users") {
-    
-    return res
-      .end(JSON.stringify(usersDB));
+    const users = database.select('users')
+
+    return res.end(JSON.stringify(users));
   }
 
   if (method === "POST" && url === '/users') {
@@ -24,7 +25,7 @@ const server = http.createServer(async (req, res) => {
       email,
     }
     
-    usersDB.push(newUser);
+    database.insert('users', newUser)
     
     return res.writeHead(201).end();
   }

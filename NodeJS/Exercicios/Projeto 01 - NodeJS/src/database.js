@@ -31,8 +31,19 @@ export class Database {
       this.#database[table] = [data];
     }
 
-    this.#persist()
+    this.#persist();
 
     return data;
+  }
+
+  remove(table, id) {   
+    const indexOfUser = this.#database[table].findIndex(user => {
+      return user.id === id
+    })
+
+    if (indexOfUser > -1) {
+      this.#database[table].splice(indexOfUser, 1);
+      this.#persist();
+    }
   }
 }
